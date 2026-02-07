@@ -1,0 +1,114 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+/* Main Calculator */
+
+.app {
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.calculator {
+  width: 400px;
+  height: auto;
+  background-color: #292e37;
+  border-radius: 48px;
+}
+
+/* Display */
+.calculator__display {
+  height: 260px;
+  background-color: #292e37;
+  border-radius: 48px 48px 0 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: end;
+  padding: 37px;
+  gap: 20px;
+}
+.calculator__display__number {
+  color: white;
+  font-size: 48px;
+}
+
+.calculator__display__number--top {
+  font-size: 24px;
+  font-weight: 200;
+}
+.calculator__display__number--bottom {
+  font-size: 48px;
+}
+
+/* Controls */
+.calculator__controls {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 3px;
+}
+
+.calculator__button {
+  background-color: #2f3747;
+  color: white;
+  border: none;
+  padding: 35px 35px;
+}
+
+.calculator__button--equals {
+  grid-column-start: 4;
+  grid-row-start: 4;
+  grid-row-end: 6;
+  border-bottom-right-radius: 48px;
+}
+
+.calculator__button--decimal {
+  grid-column-start: 1;
+  grid-row-start: 5;
+  grid-row-end: 6;
+  border-bottom-left-radius: 48px;
+}
+
+.calculator__button--subtract {
+  grid-column-start: 4;
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
+
+.calculator__button--add {
+  grid-column-start: 4;
+  grid-row-start: 3;
+  grid-row-end: 4;
+}
+
+.calculator__button--add {
+  grid-column-start: 4;
+  grid-row-start: 3;
+}
+
+.calculator__button--clear_last {
+  grid-column-start: 4;
+  grid-row-start: 1;
+}
+
+.calculator__button--clear_all {
+  grid-column-start: 1;
+  grid-row-start: 1;
+}
+
+.calculator__button--divide {
+  grid-column-start: 2;
+  grid-row-start: 1;
+}
+.calculator__button--multiply {
+  grid-column-start: 3;
+  grid-row-start: 1;
+}
