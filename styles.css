@@ -47,6 +47,8 @@
   align-items: end;
   padding: 37px;
   gap: 20px;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .calculator__display__number {
   color: var(--text-primary);
@@ -61,6 +63,10 @@
 }
 
 /* Controls */
+
+.calculator__button:disabled {
+  background-color: #c0b2c9;
+}
 .calculator__controls {
   display: grid;
   grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
