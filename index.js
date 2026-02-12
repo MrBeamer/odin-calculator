@@ -148,6 +148,19 @@ const getButtonValue = (event) => {
     return;
   }
 
+  if (bottomDisplayNumber.textContent.trim().length > 24) {
+    console.log(bottomDisplayNumber.textContent.trim().length);
+    bottomDisplayNumber.style.fontSize = "14px";
+  } else if (bottomDisplayNumber.textContent.trim().length > 15) {
+    console.log(bottomDisplayNumber.textContent.trim().length);
+    bottomDisplayNumber.style.fontSize = "24px";
+  } else if (bottomDisplayNumber.textContent.trim().length > 11) {
+    console.log(bottomDisplayNumber.textContent.trim().length);
+    bottomDisplayNumber.style.fontSize = "34px";
+  } else if (bottomDisplayNumber.textContent.trim().length > 7) {
+    bottomDisplayNumber.style.fontSize = "44px";
+  }
+
   //Resets screen when result is shown and next input is a number
   if (isResultDisplayed && isNotOperator(value)) {
     str1 = "";
@@ -231,5 +244,3 @@ const getButtonValue = (event) => {
   console.log(isResultDisplayed);
 };
 buttons.addEventListener("click", getButtonValue);
-
-//when result  is zero or in general a number an then clicking . => then its removes 0. replaces it by pushed number

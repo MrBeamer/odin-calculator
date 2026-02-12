@@ -15,7 +15,10 @@
   font-optical-sizing: auto;
   font-style: normal;
 }
-/* background: linear-gradient(135deg, #4b3652 0%, #2a1b2e 100%); */
+
+body {
+  background: linear-gradient(135deg, #4b3652 0%, #2a1b2e 100%);
+}
 
 /* Main Calculator */
 .app {
@@ -29,11 +32,8 @@
   height: auto;
   background-color: var(--bg-app);
   border-radius: 48px;
-  /* The White Border */
-  /* border: 5px solid #ffffff; */
-
-  /* The Shadow: Horizontal, Vertical, Blur, Spread, Color */
-  /* box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); */
+  border: 3px solid #ffffff;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 /* Display */
@@ -58,12 +58,12 @@
   font-size: 24px;
   font-weight: 200;
 }
+
 .calculator__display__number--bottom {
   font-size: 64px;
 }
 
 /* Controls */
-
 .calculator__button:disabled {
   background-color: #c0b2c9;
 }
