@@ -2,6 +2,7 @@ const buttons = document.querySelector(".calculator__controls");
 const bottomDisplayNumber = document.querySelector(
   ".calculator__display__number--bottom",
 );
+
 let str1 = "";
 let operator = "";
 let str2 = "";
@@ -45,7 +46,6 @@ const modulo = (num1, num2) => {
   equals(result);
 };
 
-//this looks clean now
 const equals = (result) => {
   isResultDisplayed = true;
   updateDisplay(result);
@@ -64,6 +64,7 @@ const clearAll = () => {
   result = null;
   isResultDisplayed = false;
   isInitial = true;
+  resizeText();
 };
 
 const clearLast = () => {
@@ -115,6 +116,11 @@ const handleCommand = (operator) => {
 
 // I think this logical is now clean
 const updateDisplay = (content) => {
+  //Handles number resizing for big numbers
+  //   if (bottomDisplayNumber.textContent.trim().length < 7) {
+  //     bottomDisplayNumber.style.fontSize = "64px";
+  //   } else
+  resizeText();
   console.log("result is displayed: " + isResultDisplayed);
   const isDefault = bottomDisplayNumber.textContent.trim() === "0";
   if ((isDefault && isInitial && result === null) || isResultDisplayed) {
@@ -135,21 +141,9 @@ const isNotOperator = (value) => {
   return !["+", "-", "*", "/", "=", "ac", "cl", "%"].includes(value);
 };
 
-let round = 0;
-const getButtonValue = (event) => {
-  round++;
-  console.log("Round: " + round);
-
-  console.log("before block:" + isResultDisplayed);
-
-  const value = event.target.closest(".calculator__button").dataset.value;
-  // Checks if str1 is empty if, its not possible to enter 0
-  if (str1 === "" && value === "0") {
-    return;
-  }
-
+//Handles number resizing for big numbers
+const resizeText = () => {
   if (bottomDisplayNumber.textContent.trim().length > 24) {
-    console.log(bottomDisplayNumber.textContent.trim().length);
     bottomDisplayNumber.style.fontSize = "14px";
   } else if (bottomDisplayNumber.textContent.trim().length > 15) {
     console.log(bottomDisplayNumber.textContent.trim().length);
@@ -159,12 +153,31 @@ const getButtonValue = (event) => {
     bottomDisplayNumber.style.fontSize = "34px";
   } else if (bottomDisplayNumber.textContent.trim().length > 7) {
     bottomDisplayNumber.style.fontSize = "44px";
+  } else {
+    bottomDisplayNumber.style.fontSize = "64px";
   }
+};
+
+let round = 0;
+const getButtonValue = (event) => {
+  round++;
+  console.log("Round: " + round);
+
+  const value = event?.target.closest(".calculator__button")?.dataset.value;
+
+  if (value === null || value === undefined) return;
+  // Checks if str1 is empty if, its not possible to enter 0
+  if (str1 === "" && value === "0") {
+    return;
+  }
+  resizeText();
 
   //Resets screen when result is shown and next input is a number
   if (isResultDisplayed && isNotOperator(value)) {
+    console.log("test2");
     str1 = "";
     bottomDisplayNumber.textContent = "";
+    isResultDisplayed = false;
   }
 
   if (value === ".") {
@@ -188,7 +201,7 @@ const getButtonValue = (event) => {
       }
     }
   }
-  //this controls what happens when sombebody inputs =
+  //this controls what happens when user inputs =
   if (value === "=") {
     if (str1 !== "" && operator !== "" && str2 !== "") {
       handleOperation(str1, operator, str2);
@@ -208,23 +221,20 @@ const getButtonValue = (event) => {
     }
     //This helps to remove the current operator, and replace it with the second clicked operator first 6+- will be 6- swap
     if (str1 !== "" && operator !== "" && str2 === "") {
-      console.log("test2");
       let str1NoOperator = bottomDisplayNumber.textContent.slice(0, -1);
       bottomDisplayNumber.textContent = str1NoOperator;
     }
 
     //this handle chains 2+2+
     if (str1 !== "" && str2 !== "") {
-      console.log("test3");
       handleOperation(str1, operator, str2);
     }
-    operator = value; // Set NEW operator
+    operator = value;
     operatorCount = 1;
     isResultDisplayed = false;
     updateDisplay(value);
     console.log("Saved to operator: " + value);
   } else if (operator) {
-    console.log("test4");
     str2 += value;
     updateDisplay(value);
     console.log("Saved to numb2: " + value);
@@ -234,13 +244,9 @@ const getButtonValue = (event) => {
     console.log("Saved to numb1: " + value);
   }
 
-  console.log("Displayed number: " + bottomDisplayNumber.textContent);
-  //   console.log(operatorCount + "<count current operator>" + operator);
-
   console.log(
     `end function: str1: ${str1} str2: ${str2} Operator-count: ${operatorCount} Operator: ${operator}`,
   );
-  console.log(bottomDisplayNumber);
   console.log(isResultDisplayed);
 };
 buttons.addEventListener("click", getButtonValue);
