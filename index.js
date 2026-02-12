@@ -41,7 +41,6 @@ const multiply = (num1, num2) => {
 
 const modulo = (num1, num2) => {
   let sum = num1 % num2;
-  console.log(sum);
   result = sum;
   equals(result);
 };
@@ -54,10 +53,6 @@ const equals = (result) => {
   str2 = "";
   operatorCount = 0;
   operator = "";
-  console.log(
-    `Equal function: str1: ${str1} str2: ${str2} Operator-count: ${operatorCount} Operator: ${operator}`,
-  );
-  console.log("current result:" + result);
 };
 
 const clearAll = () => {
@@ -68,12 +63,16 @@ const clearAll = () => {
   str2 = "";
   result = null;
   isResultDisplayed = false;
+  isInitial = true;
 };
 
 const clearLast = () => {
-  let strRemovedLastChar = bottomDisplayNumber.textContent.slice(0, -1);
-  bottomDisplayNumber.textContent = strRemovedLastChar;
-
+  //removes last character from display
+  let strRemovedLastCharDisplay = bottomDisplayNumber.textContent.slice(0, -1);
+  //removes last character from saved str1
+  str1 = str1.slice(0, -1);
+  bottomDisplayNumber.textContent = strRemovedLastCharDisplay;
+  isInitial = true;
   if (bottomDisplayNumber.textContent === "") {
     bottomDisplayNumber.textContent = 0;
   }
@@ -133,7 +132,7 @@ const isOperator = (value) => {
 };
 
 const isNotOperator = (value) => {
-  return !["+", "-", "*", "/", "=", "ac", "cl"].includes(value);
+  return !["+", "-", "*", "/", "=", "ac", "cl", "%"].includes(value);
 };
 
 let round = 0;
@@ -144,16 +143,38 @@ const getButtonValue = (event) => {
   console.log("before block:" + isResultDisplayed);
 
   const value = event.target.closest(".calculator__button").dataset.value;
+  // Checks if str1 is empty if, its not possible to enter 0
+  if (str1 === "" && value === "0") {
+    return;
+  }
 
+  //Resets screen when result is shown and next input is a number
   if (isResultDisplayed && isNotOperator(value)) {
     str1 = "";
     bottomDisplayNumber.textContent = "";
   }
-  // Check a number was typed, if not . is not possible to use
-  if ((value === "." && str1 === "") || dotCount > 1) {
-    return;
-  }
 
+  if (value === ".") {
+    if (operatorCount === 0) {
+      if (str1 === "") {
+        str1 = "0.";
+        bottomDisplayNumber.textContent = str1;
+        isResultDisplayed = false;
+        console.log("test if this runs");
+      }
+      if (str1.includes(".")) {
+        // If str1 ALREADY HAS a period
+        return; // Then prevent adding another one
+      }
+    } else if (str1 !== "" && operator) {
+      return; //Then prevent adding .
+    } else {
+      if (str2.includes(".")) {
+        // If str2 ALREADY HAS a period
+        return; // Then prevent adding another one
+      }
+    }
+  }
   //this controls what happens when sombebody inputs =
   if (value === "=") {
     if (str1 !== "" && operator !== "" && str2 !== "") {
@@ -188,7 +209,6 @@ const getButtonValue = (event) => {
     operatorCount = 1;
     isResultDisplayed = false;
     updateDisplay(value);
-    console.log("operator count: " + operatorCount);
     console.log("Saved to operator: " + value);
   } else if (operator) {
     console.log("test4");
@@ -212,5 +232,4 @@ const getButtonValue = (event) => {
 };
 buttons.addEventListener("click", getButtonValue);
 
-//fix you cant star a number with zero
-//when result  is zero or in general a number an then clicking . => bug
+//when result  is zero or in general a number an then clicking . => then its removes 0. replaces it by pushed number
