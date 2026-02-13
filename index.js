@@ -47,9 +47,10 @@ const modulo = (num1, num2) => {
 };
 
 const equals = (result) => {
+  let resultRounded = parseFloat(result.toFixed(2)).toString();
   isResultDisplayed = true;
-  updateDisplay(result);
-  str1 = result.toString();
+  updateDisplay(resultRounded);
+  str1 = resultRounded;
   str2 = "";
   operatorCount = 0;
   operator = "";
