@@ -147,8 +147,24 @@ const resizeText = () => {
   }
 };
 
-//Checks for all dot/decimal cases
-const handleDecimalInput = (value) => {
+const getButtonValue = (event) => {
+  const value = event?.target.closest(".calculator__button")?.dataset.value;
+  // Makes sure when user clicks between the buttons, no error is thrown
+  if (value === null || value === undefined) return;
+  // Checks if str1 is empty if, its not possible to enter 0
+  if (str1 === "" && value === "0") {
+    return;
+  }
+  resizeText();
+
+  //Resets screen when result is shown and next input is a number
+  if (isResultDisplayed && isNotOperator(value)) {
+    str1 = "";
+    bottomDisplayNumber.textContent = "";
+    isResultDisplayed = false;
+  }
+
+  //Checks for all dot/decimal cases
   if (value === ".") {
     if (operatorCount === 0) {
       if (str1 === "") {
@@ -169,26 +185,6 @@ const handleDecimalInput = (value) => {
       }
     }
   }
-};
-
-const getButtonValue = (event) => {
-  const value = event?.target.closest(".calculator__button")?.dataset.value;
-  // Makes sure when user clicks between the buttons, no error is thrown
-  if (value === null || value === undefined) return;
-  // Checks if str1 is empty if, its not possible to enter 0
-  if (str1 === "" && value === "0") {
-    return;
-  }
-  resizeText();
-
-  //Resets screen when result is shown and next input is a number
-  if (isResultDisplayed && isNotOperator(value)) {
-    str1 = "";
-    bottomDisplayNumber.textContent = "";
-    isResultDisplayed = false;
-  }
-
-  handleDecimalInput(value);
 
   //this controls what happens when user inputs =
   if (value === "=") {
