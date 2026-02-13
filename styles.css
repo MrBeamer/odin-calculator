@@ -18,6 +18,8 @@
 
 body {
   background: linear-gradient(135deg, #4b3652 0%, #2a1b2e 100%);
+  /* Disables all panning and zooming behavior on mobile  */
+  touch-action: none;
 }
 
 /* Main Calculator */
@@ -38,7 +40,7 @@ body {
 
 /* Display */
 .calculator__display {
-  height: 260px;
+  height: 230px;
   background-color: var(--bg-app);
   border-radius: 48px 48px 0 0;
   display: flex;
@@ -134,4 +136,27 @@ body {
   grid-column-start: 3;
   grid-row-start: 1;
   color: var(--text-secondary);
+}
+
+@media screen and (max-width: 440px) {
+  .app {
+    height: 80dvh;
+  }
+  .calculator {
+    width: 350px;
+  }
+
+  .calculator__display {
+    height: 205px;
+    padding: 37px;
+  }
+  .calculator__button {
+    padding: 25px 25px;
+  }
+}
+
+@media screen and (max-width: 395px) {
+  .app {
+    height: 100dvh;
+  }
 }

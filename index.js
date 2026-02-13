@@ -103,6 +103,7 @@ const handleOperation = (str1, operator, str2) => {
   }
 };
 
+//handles calling Delete all and delete last
 const handleCommand = (operator) => {
   switch (operator) {
     case "ac":
@@ -114,27 +115,16 @@ const handleCommand = (operator) => {
   }
 };
 
-// I think this logical is now clean
 const updateDisplay = (content) => {
-  //Handles number resizing for big numbers
-  //   if (bottomDisplayNumber.textContent.trim().length < 7) {
-  //     bottomDisplayNumber.style.fontSize = "64px";
-  //   } else
   resizeText();
-  console.log("result is displayed: " + isResultDisplayed);
   const isDefault = bottomDisplayNumber.textContent.trim() === "0";
   if ((isDefault && isInitial && result === null) || isResultDisplayed) {
     isInitial = false;
-    console.log("clear display");
     bottomDisplayNumber.textContent = "";
     bottomDisplayNumber.textContent = content;
   } else {
     bottomDisplayNumber.textContent += content;
   }
-};
-
-const isOperator = (value) => {
-  return ["+", "-", "*", "/"].includes(value);
 };
 
 const isNotOperator = (value) => {
@@ -146,10 +136,8 @@ const resizeText = () => {
   if (bottomDisplayNumber.textContent.trim().length > 24) {
     bottomDisplayNumber.style.fontSize = "14px";
   } else if (bottomDisplayNumber.textContent.trim().length > 15) {
-    console.log(bottomDisplayNumber.textContent.trim().length);
     bottomDisplayNumber.style.fontSize = "24px";
   } else if (bottomDisplayNumber.textContent.trim().length > 11) {
-    console.log(bottomDisplayNumber.textContent.trim().length);
     bottomDisplayNumber.style.fontSize = "34px";
   } else if (bottomDisplayNumber.textContent.trim().length > 7) {
     bottomDisplayNumber.style.fontSize = "44px";
@@ -158,13 +146,33 @@ const resizeText = () => {
   }
 };
 
-let round = 0;
+//Checks for all dot/decimal cases
+const handleDecimalInput = (value) => {
+  if (value === ".") {
+    if (operatorCount === 0) {
+      if (str1 === "") {
+        str1 = "0.";
+        bottomDisplayNumber.textContent = str1;
+        isResultDisplayed = false;
+      }
+      if (str1.includes(".")) {
+        //
+        return; // Then prevent adding another one
+      }
+    } else if (str1 !== "" && operator) {
+      return; //Then prevent adding .
+    } else {
+      if (str2.includes(".")) {
+        //
+        return; // Then prevent adding another one
+      }
+    }
+  }
+};
+
 const getButtonValue = (event) => {
-  round++;
-  console.log("Round: " + round);
-
   const value = event?.target.closest(".calculator__button")?.dataset.value;
-
+  // Makes sure when user clicks between the buttons, no error is thrown
   if (value === null || value === undefined) return;
   // Checks if str1 is empty if, its not possible to enter 0
   if (str1 === "" && value === "0") {
@@ -174,33 +182,13 @@ const getButtonValue = (event) => {
 
   //Resets screen when result is shown and next input is a number
   if (isResultDisplayed && isNotOperator(value)) {
-    console.log("test2");
     str1 = "";
     bottomDisplayNumber.textContent = "";
     isResultDisplayed = false;
   }
 
-  if (value === ".") {
-    if (operatorCount === 0) {
-      if (str1 === "") {
-        str1 = "0.";
-        bottomDisplayNumber.textContent = str1;
-        isResultDisplayed = false;
-        console.log("test if this runs");
-      }
-      if (str1.includes(".")) {
-        // If str1 ALREADY HAS a period
-        return; // Then prevent adding another one
-      }
-    } else if (str1 !== "" && operator) {
-      return; //Then prevent adding .
-    } else {
-      if (str2.includes(".")) {
-        // If str2 ALREADY HAS a period
-        return; // Then prevent adding another one
-      }
-    }
-  }
+  handleDecimalInput(value);
+
   //this controls what happens when user inputs =
   if (value === "=") {
     if (str1 !== "" && operator !== "" && str2 !== "") {
@@ -233,20 +221,12 @@ const getButtonValue = (event) => {
     operatorCount = 1;
     isResultDisplayed = false;
     updateDisplay(value);
-    console.log("Saved to operator: " + value);
   } else if (operator) {
     str2 += value;
     updateDisplay(value);
-    console.log("Saved to numb2: " + value);
   } else {
     str1 += value;
     updateDisplay(value);
-    console.log("Saved to numb1: " + value);
   }
-
-  console.log(
-    `end function: str1: ${str1} str2: ${str2} Operator-count: ${operatorCount} Operator: ${operator}`,
-  );
-  console.log(isResultDisplayed);
 };
 buttons.addEventListener("click", getButtonValue);
